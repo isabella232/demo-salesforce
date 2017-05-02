@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Algolia - Salesforce Demo</title>
+    <link href="./stylesheets/main.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="AlgoliaSearch">
+        <div class="header">
+            <div class="header-logo">
+                <img src="imgs/salesforce-logo.png">
+            </div>
+            <div class="header-input">
+                <div class="input-wrapper">
+                    <div class="input-container">
+                        <div class="input-icon">
+                            <img src="imgs/icon-search.png">
+                        </div>
+                        <input id="aa-search-input" type="text" id="aa-search-input" class="aa-input-search" placeholder="Search for articles or answers..." name="search" autocomplete="off" />
+                    </div>
+                    <img src="imgs/icon-globe.png" class="input-globe">
+                </div>
+            </div>
+            <div class="header-user">
+                <img src="imgs/user.png">
+            </div>
+        </div>
+        <div class="base">
+            <img src="imgs/base.png">
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+<!-- Initialize autocomplete menu -->
+<script>
+var client = algoliasearch("Q71HM8430Y", "7f42b7cbd41474bf777414c24302d4a4")
+var docs = client.initIndex('sf_docs');
+var answers = client.initIndex('sf_answers');
+
+autocomplete('#aa-search-input', {debug: true, templates: {
+    dropdownMenu:
+    '<div class="aa-dataset-doc"></div>' +
+    '<div class="aa-dataset-answer"></div>'
+    }}, [
+    {
+      source: autocomplete.sources.hits(docs, { hitsPerPage: 4 }),
+      displayKey: 'name',
+      name: 'doc',
+      templates: {
+        header: '<div class="aa-suggestions-category">Articles</div>',
+        suggestion: function(suggestion) {
+          return '<a href="' + suggestion.link + '"><p class="aa-suggestion-title">' +
+            suggestion._highlightResult.title.value + '</p><p class="aa-suggestion-desc">' +
+            suggestion._snippetResult.description.value + '</p><p class="aa-suggestion-paragraph">' + 
+            checkIfExists(suggestion._snippetResult.paragraph) + '</p><p class="aa-suggestion-metadata"><span>' +
+            suggestion._highlightResult.category.value + '</span></p></a>';
+        },
+        footer: '<div class="aa-footer"><a href="https://help.salesforce.com/search#t=ArticlesTab&f:@sflanguage=%5Ben_US%5D">View More Articles</a></div>',
+        empty: '<div class="aa-empty">No matching players</div>'
+      }
+    },
+    {
+      source: autocomplete.sources.hits(answers, { hitsPerPage: 4 }),
+      displayKey: 'name',
+      name: 'answer',
+      templates: {
+        header: '<div class="aa-suggestions-category">Answers</div>',
+        suggestion: function(suggestion) {
+          return '<a href="' + suggestion.link + '"><p class="aa-suggestion-title">' +
+            suggestion._highlightResult.title.value + '</p><p class="aa-suggestion-desc">' +
+            suggestion._snippetResult.description.value + '</p><p class="aa-suggestion-metadata"><span>' +
+            suggestion.replies + ' replies</span><span>・</span><span>Created ' +
+            suggestion.date + '</span></p></a>';
+        },
+        footer: '<div class="aa-footer"><a href="https://help.salesforce.com/search#t=AnswersTab&f:@sflanguage=%5Ben_US%5D">View More Answers</a></div>',
+        empty: '<div class="aa-empty">No matching teams</div>'
+      }
+    }
+]);
+    
+function checkIfExists(item) {
+    return item != undefined ? item.value : "";
+}
+</script>
+</body>
+
+</html>
