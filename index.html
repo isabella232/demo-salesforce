@@ -58,7 +58,7 @@ autocomplete('#aa-search-input', {debug: true, templates: {
             suggestion._highlightResult.category.value + '</span></p></a>';
         },
         footer: '<div class="aa-footer"><a href="https://help.salesforce.com/search#t=ArticlesTab&f:@sflanguage=%5Ben_US%5D">View More Articles</a></div>',
-        empty: '<div class="aa-empty">No matching players</div>'
+        empty: '<div class="aa-empty">No matching articles found.</div>'
       }
     },
     {
@@ -71,11 +71,11 @@ autocomplete('#aa-search-input', {debug: true, templates: {
           return '<a href="' + suggestion.link + '"><p class="aa-suggestion-title">' +
             suggestion._highlightResult.title.value + '</p><p class="aa-suggestion-desc">' +
             suggestion._snippetResult.description.value + '</p><p class="aa-suggestion-metadata"><span>' +
-            suggestion.replies + ' replies</span><span>・</span><span>Created ' +
+            suggestion.replies + ' replies</span><span> &#8226; </span><span>Created ' +
             suggestion.date + '</span></p></a>';
         },
         footer: '<div class="aa-footer"><a href="https://help.salesforce.com/search#t=AnswersTab&f:@sflanguage=%5Ben_US%5D">View More Answers</a></div>',
-        empty: '<div class="aa-empty">No matching teams</div>'
+        empty: '<div class="aa-empty">No matching answers found.</div>'
       }
     }
 ]);
